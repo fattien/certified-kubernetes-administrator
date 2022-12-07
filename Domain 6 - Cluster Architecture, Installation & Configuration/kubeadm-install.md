@@ -1,8 +1,10 @@
 ##### Documentation Link:
 
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-#Step 0
+#### Step 0: k8s cluster doesn't work while swap is on
+```sh
 swapoff -a
+```
 ##### Step 1: Setup containerd
 ```sh
 cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
