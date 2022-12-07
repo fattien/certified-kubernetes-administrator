@@ -1,7 +1,8 @@
 ##### Documentation Link:
 
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-
+#Step 0
+swapoff -a
 ##### Step 1: Setup containerd
 ```sh
 cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
@@ -64,7 +65,8 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 #### Step 4: Initialize Cluster with kubeadm (Only master node)
 ```sh
-kubeadm init --pod-network-cidr=10.244.0.0/16
+#kubeadm init --pod-network-cidr=10.244.0.0/16
+kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address 10.0.14.50 --ignore-preflight-errors=Port-10250,DirAvailable--var-lib-etcd
 ```
 ```sh
 mkdir -p $HOME/.kube
@@ -73,7 +75,8 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 ##### Step 5: Install Network Addon (flannel) (master node)
 ```sh
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+#kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml --insecure-skip-tls-verify
 ```
 ##### Step 6: Connect Worker Node (Only worker node)
 ```sh
